@@ -1,9 +1,19 @@
 import numpy as np
 import pandas as pd
+import sklearn
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.mixture import BayesianGaussianMixture
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.utils._testing import ignore_warnings
+
+if sklearn.__version__[:2] != '0.':
+    raise ImportError('Incompatible version of sklearn installed.')
+if float(sklearn.__version__[2:]) < 21.0:
+    from sklearn.utils.testing import ignore_warnings
+else:
+    from sklearn.utils._testing import ignore_warnings
+
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'  # prevents OpenMP errors with older sklearn versions
 
 
 class DataTransformer(object):
